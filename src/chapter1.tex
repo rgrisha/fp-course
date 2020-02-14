@@ -1,0 +1,50 @@
+
+
+\chapterimage{vgtu3.jpg} % Chapter heading image
+
+\chapter{Introduction to lambda calculus}
+
+\section{Definition of function}\index{Definition of function}
+
+There are 2 ways to describe functions: extensional and intensional. Extensional became popular with set theory. 
+In set theory relation between 2 sets is defined as Cartesian product: $R \subseteq X \times Y$. Function
+is a special kind of relation:
+$X$ is called function's domain and $Y$ is codomain, and function $f : X \rightarrow Y$ 
+is a set of pairs $f \subseteq X \times Y$ such that for each $x \in X$, there exists exactly one 
+$y \in Y$ such that $(x, y) \in f$ . Two functions $f, g : X \rightarrow Y$ are
+considered equal if they yield the same output on each input, i.e., $f(x) = g(x)$ for all $x \in X$.
+\\
+As we will see later, this is a very convienent way to compare functions or express functions with when domain cardinality is low.
+In the early 17th century Blaise Pascal built automation device for arithmetical functions. Gottfried Leibniz improved it
+to perform automated multiplication and division in the end of 17th century. He first came to idea of machine that could 
+calculate mathematical statements and give true or false answers. This started to be known as $Entscheidungsproblem$ - a decision
+problem. In 1928, logician David Hilbert formulated it officially. He believed that, by using automation, any problem can be solved.
+Just before first attempts of calculation automation were finally successful,
+\footnote{first artual attempt to build automated generic purpose machine was in 1833, when Charles Babbage, Augusta Ada Byron and 
+others were working on the first generic purpose machine - Analytical Engine}
+around 1940's, Alan Turing and Alonzo Church independently proved that $Entscheidungsproblem$ is impossible. It was clear, that
+computers or, generally speaking - algorithms cannot solve even (relatively) simple task - answer will some function return result
+or loop forever.
+\\
+Algorithm mentioned here is a way to define functions intensionally.
+
+
+\index{Definition of lambda}
+
+
+\begin{tabular}{l c c p{7cm}}
+  E & Case &  Does x occur free in E? & Explanation \\
+  \hline
+  x & 1 & yes & x appears in (is equal to) E and E does not contain any binding occurrences (no $\lambda$) \\
+  y & 1 & no  & x does not occur in E and thus cannot occur free in it \\
+  (x y) & 2 & yes & x occurs free in the first component of the function application (recursive application of case 1) \\
+  (y x) & 2 & yes & x occurs free in the second component of the function application (recursive application of case 1) \\
+  (y z) & 2 & no  & x occurs free in neither the first nor the second component of the function application (doubly recursive application of case 1) \\
+  $\lambda$$z.x$  & 3 & yes & x is different from z (the parameter of the lambda abstraction) and x occurs free in the body of the lambda abstraction (recursive application of case 1). Note that the body is what is left of the lambda abstraction after the binding occurrence (i.e., $\lambda$$z.$) is removed \\
+  $\lambda$$z.z$  & 3 & no  & x is different from z (the parameter of the lambda abstraction) and x does not occur (at all, and thus not free either) in the body of the lambda abstraction \\
+  $\lambda$$z.\lambda$$x.x$ & 3 & no & x is different from z (the parameter of the lambda abstraction) but x does not occur free in the body of the lambda abstraction (recursive application of case 3). Note that the body in this case is the lambda abstraction $\lambda$$x.x$ \\
+  \lam$x.y$ or \lam$x.x$ & 3 & no & x is identical to the parameter of the lambda abstraction E. x cannot be free in E since any free occurrences of x in the body of E would become bound in E by the leading binding occurrence of x 
+\end{tabular}
+
+
+

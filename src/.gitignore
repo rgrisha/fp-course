@@ -1,0 +1,11 @@
+ignore/
+docs/
+*.swp
+*.aux
+*.bcf
+*.idx
+*.log
+*.pdf
+*.ptc
+*.run.xml
+*.toc
