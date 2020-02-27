@@ -28,8 +28,25 @@ or loop forever.
 \\
 Algorithm mentioned here is a way to define functions intensionally.
 
+\section{Definition of lambda}\index{Definition of lambda}
 
-\index{Definition of lambda}
+Lambda calculus is expressed as context free grammar in following BNF form:
+
+\[ e ::= x \ | \ \lambda{x}.{e} \ | \  e_0~e_1 \]
+
+$x$ here is a variable, there is unlimited number of variables - we can invent them as we need. Second one - \lam${x}.{e}$ 
+is called lambda abstraction and denotes function. Third one - $e_0~e_§$ is an application and denotes "invoking" a function ($e_0$)
+by sending it an argument ($e1$)
+Since BNF is recursive definition, we can quickly spot that if lambda abstraction is a function, we can apply it another function.
+This defines one of the essential lambda calculus properties - function is an element of the language. In imperative language we use
+language constructs to create functions and they become part of the solution we implement. In lambda language we can construct 
+functions by composing another functions - they are part of the language.
+\\
+Though lambda is a model to describe algorithms, we started to talk it as a language. Indeed, lambda is also a programming language,
+which, adeed some augmentations is able to describe concepts of problem solving. Functional languages like Haskell, Ocaml, Miranda and others
+have augmented lambda language and evolved to become fully functional and powerful programming languages.
+\\
+Of course, definition above is very terse and we need rules
 
 
 \begin{tabular}{l c c p{7cm}}
