@@ -28,7 +28,7 @@ or loop forever.
 \\
 Algorithm mentioned here is a way to define functions intensionally.
 
-\section{Definition of lambda}\index{Definition of lambda}
+\subsection{Definition of lambda}\index{Definition of lambda}
 
 Lambda calculus is expressed as context free grammar in following BNF form:
 
@@ -46,8 +46,54 @@ Though lambda is a model to describe algorithms, we started to talk it as a lang
 which, adeed some augmentations is able to describe concepts of problem solving. Functional languages like Haskell, Ocaml, Miranda and others
 have augmented lambda language and evolved to become fully functional and powerful programming languages.
 \\
-Of course, definition above is very terse and we need rules
+Definition above is very terse and we need rules on how to operate lambda structures.
 
+\subsection{Notation rules}
+
+To minimize number of parentheses, following conventions used:
+\\Application assiociates to the left. If there are more than 2 members in application, consider application of first 2 on the left, then their
+result is applied to third member, etc.:
+
+\[e_0\ e_1\ e_2\ ::=\ ((e_0\ e_1)\ e_2)\]
+
+Same with more elements in application:
+
+\[e_0\ e_1\ e_2\ e_3\ ::=\ (((e_0\ e_1)\ e_2)\ e_3)\]
+
+Lambda scope extends to the right as far as possible:
+
+\[\lambda{x}.e_0\ e_1\ e_2 ... e_n ::= (\lambda{x}.(e_0\ e_1\ e_2 ... e_n ))\]
+
+This scope maybe "ended" by parentheses: scope of $x$ does not extends to second expression $\lambda{y}...$
+
+\[(\lambda{x}.e_0\ e_1 ... e_n\ )\ (\lambda{y}.f_0\ f_1\ ...\ f_n)\]
+
+Rightmost lambda binds closest expression:
+
+\[\lambda{xyz}.e\ ::= \ (\lambda{x}.(\lambda{y}.(\lambda{z}.e))) \]
+
+Application still has priority:
+
+\[ \lambda{xy}.eyz ::= (\lambda{x}.(\lambda{y}.((ey)\ z))) \]
+
+\subsection{Variable Binding}
+A lambda expression introduces a $binding\ occurrence$ - all variables in lambda abstraction before the dot. 
+Variable $x$ is $free$ if it does not occur within scope of \lam$x$.
+This is called $lexical\ scoping$; the variable's scope is
+defined by the text (body) of the program. It is ``lexical'', because it is
+possible to determine its scope in the text, in lexemas of the language as soon as we have 
+the body of a program, before it's execution.
+
+%%TODO - examples
+
+Below red circles denote bound variables and blue ones denote free:
+
+\[ (\lambda{x}.\circleblue{y}\ \circlered{x}) (\lambda{y}.\circlered{y}\ \circleblue{x}) \]
+\[ \lambda{xz}.\circleblue{y}\ \circlered{x} (\lambda{y}.\circlered{y}\ \circlered{z}) \]
+
+\subsection{Free and bound variables}
+Roughly, variable is free if it does not occur in lambda's abstraction binding expression. Following table shows basic cases of
+free and bound variables
 
 \begin{tabular}{l c c p{7cm}}
   E & Case &  Does x occur free in E? & Explanation \\
@@ -64,4 +110,29 @@ Of course, definition above is very terse and we need rules
 \end{tabular}
 
 
+\subsection{Reductions}
+Reductions are rules how we process lambda expressions.
+%% todo alpha reduction
+%% todo beta reduction
+
+\subsection{Combinators}
+Expressions containing free variables, f.ex like $x$ or $(xy)$ have not much meaning if variables are plain (no context). These expressions cannot be reduced, hence
+no application is possible. What would be more meaningful (in term of reductions) if expressions would have no free variables, which would guarantee that 
+lambda expression applied to arguments will reduce.
+\\
+Expressions with no free variables are called \textbf{combinators}.
+
+\subsection{Pairs and lists}
+Pair is a combinator that will result in an expression, "capturing" 2 values:
+\[pair ::= \lambda{abf}.fab \]
+To recap - we use "sugared" version where lambda associates to the right until dot and applications associates to the right. 
+This effectively means:
+\[pair ::= \lambda{a}.\lambda{b}.\lambda{f}.((f a)\ b) \]
+
+by applying 2 arguments to pair combinator we will get expression, f.ex:
+%% todo a sample how to create a pair
+
+to extract the values we will use the following expressions:
+\[first ::= \lambda{ab}.a \] 
+\[second ::= \lambda{ab}.b \] 
 
