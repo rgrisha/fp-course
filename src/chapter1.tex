@@ -109,20 +109,43 @@ free and bound variables
   \lam$x.y$ or \lam$x.x$ & 3 & no & x is identical to the parameter of the lambda abstraction E. x cannot be free in E since any free occurrences of x in the body of E would become bound in E by the leading binding occurrence of x 
 \end{tabular}
 
+A set of free variables of expression $e$ is denoted $FV(e)$. Similar way, bound variable set of $e$ is $BV(e)$. Examples:
+\\
+
+\begin{tabular}{l c c}
+    Expression $e$ & $FV(e)$ & $BV(e)$ \\
+    $\lambda{x}.x$ & $\emptyset$ & $\{x\}$ \\
+    $\lambda{x}.y$ & $\{y\}$ & $\emptyset$ \\
+\end{tabular}
+
 
 \subsection{Reductions}
-Reductions are rules how we process lambda expressions.
-%% todo alpha reduction
-%% todo beta reduction
+Reductions are rules how we process lambda expressions. They lead to "execution" of lambda expressions. 
+
+\begin{itemize}
+    \item $\alpha{-}$conversion
+        \\
+        Lambda abstraction $\lambda{x}.e$ can be converted to $\lambda{y}.e[y/x]$ only if $y\ \notin\ FV(e)$. ($y$ does not occur free in $e$).
+        \\
+        If we omnit this rule, expression $\lambda{x}.xy[y/x]$ would become $\lambda{y}.yy$ and it would become completely different expression
+        %% todo - example with javascript
+
+    \item $\beta{-}$conversion
+        \\
+        $(\lambda{x}.e)y ::= e[y/x]$
+\end{itemize}
+
+$\alpha{-}$reduction is used when rename of bound variables is needed. $\beta{-}$conversion is the core operation of \lam calculus. 
+It allows expression to be applied. Speaking more common, it allows "function" to "receive" parameters and "process" them.
 
 \subsection{Combinators}
-Expressions containing free variables, f.ex like $x$ or $(xy)$ have not much meaning if variables are plain (no context). These expressions cannot be reduced, hence
+Expressions containing free variables, f.ex like $x$ or $(xy)$ have not much meaning if they are simple variables. These expressions cannot be further reduced, hence
 no application is possible. What would be more meaningful (in term of reductions) if expressions would have no free variables, which would guarantee that 
 lambda expression applied to arguments will reduce.
 \\
 Expressions with no free variables are called \textbf{combinators}.
 
-\subsection{Pairs and lists}
+\subsubsection{Pairs}
 Pair is a combinator that will result in an expression, "capturing" 2 values:
 \[pair ::= \lambda{abf}.fab \]
 To recap - we use "sugared" version where lambda associates to the right until dot and applications associates to the right. 
@@ -130,9 +153,52 @@ This effectively means:
 \[pair ::= \lambda{a}.\lambda{b}.\lambda{f}.((f a)\ b) \]
 
 by applying 2 arguments to pair combinator we will get expression, f.ex:
-%% todo a sample how to create a pair
+\[pair\ 1 \ 2\ ::=\ (\lambda{abf}.f\ a\ b)\ 1 \ 2\ ::=\ (\lambda{bf}.f\ 1)\ 2 ::= \lambda{f}.f\ 1\ 2 \]
 
-to extract the values we will use the following expressions:
+following expressions can extract first or second member of the pair:
 \[first ::= \lambda{ab}.a \] 
 \[second ::= \lambda{ab}.b \] 
+
+Indeed, if we apply pair $first$, we get:
+\[(\lambda{f}.f\ 1\ 2)\ first ::= first\ 1\ 2 ::= (\lambda{ab}.a)\ 1\ 2 ::= (\lambda{b}.1)\ 2 ::= 1 \]
+
+%%TODO describe boolean logic
+
+%%TODO describe lists
+
+\subsection{Numbers}
+%%https://en.wikipedia.org/wiki/Church_encoding
+
+%%https://en.wikipedia.org/wiki/Set-theoretic_definition_of_natural_numbers - von Neumann ordinals
+One method to encode natural numbers would be construct them as lists, very much like von Neumann ordinals. But more "classic" way is to go natural lambda
+application chaining. This method is named "Church numerals" according to Alonzo Church, who presented it on 1941 .
+\\
+The idea is to encode numbers as successive lambda applications:
+\\
+\\
+\begin{tabular}{l l l}
+    Number & Definition & Lambda expression \\
+    \hline
+    0 & $0\ f\ x\ =\ x$ & $\lambda{fx}.x$ \\
+    1 & $1\ f\ x\ =\ f\ x$ & $\lambda{fx}.fx$ \\
+    2 & $2\ f\ x\ =\ f(f\ x)$ & $\lambda{fx}.f(fx)$ \\
+    3 & $3\ f\ x\ =\ f(f(f\ x))$ & $\lambda{fx}.f(f(fx))$ \\
+    \hline
+    \hline
+    n & $n\ f\ x\ =\ f^n\ x$ & $\lambda{fx}.f^{[n]}x$
+\end{tabular}
+\\
+Where $f^{[n]} = \underbrace{f\ \circ\ f\ \circ\ f \circ\ ...\circ\ f}_\text{n times}$ 
+\\
+Given this form of numerals following expressions provide operations:
+\[\operatorname{succ} \equiv \lambda nfx. f\ (n\ f\ x)\]
+\[\operatorname{plus} \equiv \lambda m.\lambda n.\lambda f.\lambda x. m\ f\ (n\ f\ x)\]
+\\
+Definition of predecessor is bit more complex:
+\\
+\[\operatorname{pred} \equiv \lambda n.\lambda f.\lambda x. n\ (\lambda g.\lambda h. h\ (g\ f))\ (\lambda u. x)\ (\lambda u. u)\]
+
+
+
+
 
