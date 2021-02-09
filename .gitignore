@@ -10,3 +10,8 @@ docs/
 *.run.xml
 *.toc
 docs.tar
+.DS_Store
+fp-course-docs
+*.swp
+.~lock*
+

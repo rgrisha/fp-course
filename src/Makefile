@@ -1,7 +1,8 @@
 TEX = xelatex
 DOCFILE=main
+CHAPTERS=chapter1.tex
 
-$(DOCFILE).pdf : $(DOCFILE).tex structure.tex bibliography.bib
+$(DOCFILE).pdf : $(DOCFILE).tex structure.tex $(CHAPTERS) bibliography.bib
 	$(TEX) $(DOCFILE).tex
 	echo "=============================================="
 	$(TEX) $(DOCFILE).tex

@@ -1,0 +1,15 @@
+{
+  "name": "task1",
+  "version": "1.0.0",
+  "description": "Homework task to practise with Church numerals using JS",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test-exec"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "jasmine-console-reporter": "^3.1.0"
+  }
+}
