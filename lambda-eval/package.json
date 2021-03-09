@@ -1,0 +1,14 @@
+{
+  "name": "lambda-eval",
+  "version": "1.0.0",
+  "description": "Lambda evluator",
+  "main": "src/model.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^3.6.4"
+  }
+}
