@@ -12,9 +12,23 @@ module.exports = function() {
 
   const lexer = require("./lexer")(lexems);
 
+  const {take, produce, expr, parserGenerator} = require("./parser")();
+
+/*
+E = var | \x.E | (EE)
+*/
+  const parserRules = [
+    [[take("variable")], [produce("var", [0])]],
+    [["lambda", take("variable"), "dot", expr], [produce("lambda", [0,1])]],
+    [["lpar", expr, expr, "rpar"], [produce("appl", [0,1])]]
+  ];
+
+  const parser = parserGenerator(parserRules);
+
   return {
     lexems,
-    lexer
+    lexer,
+    parser
   };
 
 }();
