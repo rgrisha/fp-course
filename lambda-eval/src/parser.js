@@ -7,53 +7,56 @@ module.exports = function() {
   function take(inputToCompare) {
     return function(inputLex) {
       if(inputToCompare === inputLex[0]) {
-        return [inputLex[1]];
+        return inputLex[1];
       } else {
-        return [];
+        return false;
       }
     }
   }
 
-  function produce(name, saved) {
-    return [name, saved.map( i => saved[i]) ];
+  function produce(name, indexes) {
+    return function(saved) {
+      return [name, ... indexes.map( i => saved[i]) ];
+    }
   }
 
-  function ruleMathched(rule, _input) {
+  function ruleMatched(rule, _input) {
     let input = [..._input];
-    ruleResults = [];
-    for(i = 0; i < rule.length; i++) {
-      let inputLex = shift(input);
+    let result = [];
+    //console.log("rule ", rule, _input, rule.length);
+    for(let i = 0; i < rule.length; i++) {
+      let inp = input.shift();
+
       if(typeof rule[i] === "string") {
-        if(rule[i] !== inputLex[0]) {
-          return [];
+        if(rule[i] !== inp) {
+          return false;
         }
       } else if(typeof rule[i] === "function") {
-        let ruleResult = rule[i](input[i]);
-        if(ruleResult.length === 0) {
-          return [];
+        let fnResult = rule[i](inp);
+        if(fnResult) {
+          result.push(fnResult);
         } else {
-          ruleResults.push(ruleResult);
+          return false;
         }
       } else {
-        return [];
+        return false;
       }
     }
-
-    return [ruleResults, input];
-
+    //console.log("returning ", result);
+    return [result, input];
   }
 
 
   function parserGenerator(rules) {
-    return function(input) {
-      let result = [];
-      for(i = 0; i < rules.length; i++) {
-        result = rules[i];
-        if(result.length > 0) {
-          break;
+    return function(_input) {
+      let input = [..._input];
+      for(let i = 0; i < rules.length; i++) {
+        let result = ruleMatched(rules[i][0], input);
+        if(result) {
+          console.log("result", result);
+          return rules[i][1](result[0]);
         }
       }
-      return result;
     }
   }
 

@@ -18,9 +18,9 @@ module.exports = function() {
 E = var | \x.E | (EE)
 */
   const parserRules = [
-    [[take("variable")], [produce("var", [0])]],
-    [["lambda", take("variable"), "dot", expr], [produce("lambda", [0,1])]],
-    [["lpar", expr, expr, "rpar"], [produce("appl", [0,1])]]
+    [[take("variable")], produce("var", [0])],
+    [["lambda", take("variable"), "dot", expr], produce("lambda", [0,1])],
+    [["lpar", expr, expr, "rpar"], produce("appl", [0,1])]
   ];
 
   const parser = parserGenerator(parserRules);
